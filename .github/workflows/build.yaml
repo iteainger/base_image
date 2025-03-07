@@ -1,0 +1,47 @@
+name: baseimage
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+    inputs: {}
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: xmh/baseimage
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ !endsWith(github.event.head_commit.message, '~') }}
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Log into registry ${{ env.REGISTRY }}
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: fj0r
+        password: ${{ secrets.GHCR_TOKEN }}
+    - name: Extract Docker metadata
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+    - uses: dorny/paths-filter@v3
+      id: changes
+      with:
+        filters: |
+          frontend:
+          - frontend/**
+    - name: Build frontend
+      if: steps.changes.outputs.frontend == 'true' || github.event.name == 'workflow_dispatch'
+      uses: docker/build-push-action@v4
+      with:
+        context: frontend
+        file: frontend/Dockerfile
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:frontend
+        labels: ${{ steps.meta.outputs.labels }}
