@@ -91,6 +91,7 @@ export def list [] {
 
 export def git-hooks [act ctx] {
     if $act == 'pre-commit' and $ctx.branch == 'main' {
+        print $'(ansi grey)generate github actions workflow(ansi reset)'
         gen
         git add .
     }
