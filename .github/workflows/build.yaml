@@ -34,8 +34,19 @@ jobs:
       id: changes
       with:
         filters: |
+          dify:
+          - dify/**
           frontend:
           - frontend/**
+    - name: Build dify
+      if: steps.changes.outputs.dify == 'true' || github.event.name == 'workflow_dispatch'
+      uses: docker/build-push-action@v4
+      with:
+        context: dify
+        file: dify/Dockerfile
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dify
+        labels: ${{ steps.meta.outputs.labels }}
     - name: Build frontend
       if: steps.changes.outputs.frontend == 'true' || github.event.name == 'workflow_dispatch'
       uses: docker/build-push-action@v4
