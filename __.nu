@@ -89,6 +89,13 @@ export def list [] {
     }
 }
 
+export def git-hooks [act ctx] {
+    if $act == 'pre-commit' and $ctx.branch == 'main' {
+        gen
+        git add .
+    }
+}
+
 export def main [] {
     gen
 }
