@@ -81,3 +81,14 @@ export def gen [] {
     | to yaml
     | save -f .github/workflows/build.yaml
 }
+
+export def list [] {
+    let px = ls | where type == dir | get name
+    for i in $px {
+        print $"($env.REGISTRY)/($env.IMAGE_NAME):($i)"
+    }
+}
+
+export def main [] {
+    gen
+}
