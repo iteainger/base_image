@@ -1,2 +1,2 @@
 REGISTRY: "ghcr.io"
-IMAGE_NAME: "xmh/baseimage"
+IMAGE_NAME: "iteainger/base_image"
