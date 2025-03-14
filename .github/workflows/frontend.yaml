@@ -1,4 +1,4 @@
-name: images
+name: build frontend
 on:
   push:
     branches:
@@ -34,7 +34,6 @@ jobs:
       id: changes
       with:
         filters: |
-          frontend:
           - frontend/**
     - name: Build frontend
       if: steps.changes.outputs.frontend == 'true' || github.event.name == 'workflow_dispatch'
