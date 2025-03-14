@@ -1,4 +1,4 @@
-name: build frontend
+name: build risingwave
 on:
   push:
     branches:
@@ -34,14 +34,14 @@ jobs:
       id: changes
       with:
         filters: |
-          frontend:
-          - frontend/**
-    - name: Build frontend
-      if: steps.changes.outputs.frontend == 'true' || github.event.name == 'workflow_dispatch'
+          risingwave:
+          - risingwave/**
+    - name: Build risingwave
+      if: steps.changes.outputs.risingwave == 'true' || github.event.name == 'workflow_dispatch'
       uses: docker/build-push-action@v4
       with:
-        context: frontend
-        file: frontend/Dockerfile
+        context: risingwave
+        file: risingwave/py.Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:frontend
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:risingwave-py
         labels: ${{ steps.meta.outputs.labels }}

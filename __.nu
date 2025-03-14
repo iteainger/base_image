@@ -41,7 +41,7 @@ export def generate [
             }
         }
 
-        let pf = [ $"($x)/**" ] | to yaml
+        let pf = { $x: [ $"($x)/**" ] } | to yaml
 
         {
           name: $"build ($x)"
