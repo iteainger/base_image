@@ -1,2 +1,7 @@
-REGISTRY: "ghcr.io"
-IMAGE_NAME: "iteainger/base_image"
+generate:
+    name: images
+    user: iteainger
+    image: base_image
+    registry: ghcr.io
+    exclude:
+    - postgres

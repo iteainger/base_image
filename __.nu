@@ -1,12 +1,23 @@
 export def gen [] {
     const wd = path self .
     cd $wd
-    let px = ls | where type == dir | get name
-    let pf = $px | reduce -f {} {|i,a|
+    let g = $env.generate
+    let paths = ls
+    | where type == dir
+    | get name
+    | filter { $in not-in $g.exclude }
+    generate $paths $g
+}
+
+export def generate [
+    paths
+    ctx: record
+] {
+    let pf = $paths | reduce -f {} {|i,a|
         $a | insert $i [ $"($i)/**" ]
     }
     | to yaml
-    let bs = $px
+    let bs = $paths
     | each {|x|
         {
             name: $"Build ($x)"
@@ -22,7 +33,7 @@ export def gen [] {
         }
     }
     let wf = {
-      name: baseimage
+      name: $ctx.name
       on: {
         push: {
           branches: [main]
@@ -32,8 +43,8 @@ export def gen [] {
         }
       }
       env: {
-        REGISTRY: $env.REGISTRY
-        IMAGE_NAME: $env.IMAGE_NAME
+        REGISTRY: $ctx.registry
+        IMAGE_NAME: $"($ctx.user)/($ctx.image)"
       }
       jobs: {
         build: {
@@ -54,7 +65,7 @@ export def gen [] {
               uses: "docker/login-action@v2",
               with: {
                 registry: "${{ env.REGISTRY }}",
-                username: "fj0r",
+                username: $ctx.user,
                 password: "${{ secrets.GHCR_TOKEN }}"
               }
             }
