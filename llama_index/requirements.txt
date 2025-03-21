@@ -1,0 +1,11 @@
+llama_index
+boltons
+httpx
+websockets
+fastapi
+fastapi-cli
+pydantic
+aiostream
+watchfiles
+openai
+pyarrow
