@@ -1,0 +1,13 @@
+pydantic-ai[logfire]
+pydantic-graph
+pip_system_certs
+boltons
+httpx
+websockets
+fastapi
+fastapi-cli
+pydantic
+aiostream
+watchfiles
+openai
+pyarrow
