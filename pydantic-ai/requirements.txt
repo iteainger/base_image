@@ -1,5 +1,7 @@
-pydantic-ai[logfire]
+pydantic-ai
 pydantic-graph
+truststore
+pyyaml
 pip_system_certs
 boltons
 httpx
