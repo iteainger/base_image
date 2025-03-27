@@ -1,5 +1,6 @@
 pydantic-ai
 pydantic-graph
+pydantic-settings
 truststore
 pyyaml
 pip_system_certs
