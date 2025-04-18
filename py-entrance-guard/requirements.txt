@@ -1,0 +1,10 @@
+fastapi
+requests
+uvicorn
+pypika
+pydantic
+pydantic-settings
+PyYAML
+asyncmy
+pillow
+sqlalchemy
