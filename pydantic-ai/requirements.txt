@@ -15,4 +15,4 @@ aiostream
 watchfiles
 openai
 pyarrow
-kafka-python
+aiokafka
