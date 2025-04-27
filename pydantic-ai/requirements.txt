@@ -4,6 +4,7 @@ pydantic-settings
 truststore
 pyyaml
 pip_system_certs
+surrealdb
 boltons
 httpx
 websockets
@@ -14,3 +15,4 @@ aiostream
 watchfiles
 openai
 pyarrow
+kafka-python
