@@ -4,6 +4,7 @@ pydantic-settings
 truststore
 pyyaml
 pip_system_certs
+psycopg[binary]
 surrealdb
 boltons
 httpx
