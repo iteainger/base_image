@@ -17,3 +17,4 @@ watchfiles
 openai
 pyarrow
 aiokafka
+simplejson
