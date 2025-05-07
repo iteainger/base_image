@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - main
+    - pg_duckdb
   workflow_dispatch:
     inputs: {}
 env:

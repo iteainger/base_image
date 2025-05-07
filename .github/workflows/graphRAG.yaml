@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - main
+    - graphRAG
   workflow_dispatch:
     inputs: {}
 env:
