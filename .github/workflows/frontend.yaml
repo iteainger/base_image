@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - main
+    - frontend
   workflow_dispatch:
     inputs: {}
 env:

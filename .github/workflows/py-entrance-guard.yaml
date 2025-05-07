@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - main
+    - py-entrance-guard
   workflow_dispatch:
     inputs: {}
 env:

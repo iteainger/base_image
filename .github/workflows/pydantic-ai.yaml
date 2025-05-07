@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - main
+    - pydantic-ai
   workflow_dispatch:
     inputs: {}
 env:

@@ -47,7 +47,7 @@ export def generate [
           name: $"build ($x)"
           on: {
             push: {
-              branches: [main]
+              branches: [main, $x]
             }
             workflow_dispatch: {
               inputs: {}
