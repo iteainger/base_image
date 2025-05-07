@@ -14,13 +14,8 @@ RUN set -eux \
   ; git clone --depth=1 https://github.com/duckdb/pg_duckdb.git . \
   ; git submodule update --init --recursive \
   ; make -j$(nproc) \
-  ; DESTDIR=/out1 make install \
+  ; DESTDIR=/out make install \
   \
-  ; mkdir -p /out/lib/postgresql/${PG_VERSION_MAJOR}/lib \
-  ; cp *.so /out/lib/postgresql/${PG_VERSION_MAJOR}/lib \
-  ; mkdir -p /out/share/postgresql/${PG_VERSION_MAJOR}/extension \
-  ; cp *.control /out/share/postgresql/${PG_VERSION_MAJOR}/extension \
-  ; cp sql/*.sql /out/share/postgresql/${PG_VERSION_MAJOR}/extension \
-  ; cd /out \
+  ; cd /out/usr \
   ; tar zcvf /tmp/pg_duckdb.tar.gz * \
   ;
