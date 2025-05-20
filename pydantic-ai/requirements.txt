@@ -18,3 +18,4 @@ openai
 pyarrow
 aiokafka
 simplejson
+shortuuid
