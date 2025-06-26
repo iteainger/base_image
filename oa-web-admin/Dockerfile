@@ -4,5 +4,5 @@ WORKDIR /app
 
 COPY package.json .
 
-RUN npm -i \
+RUN npm install \
  && mv node_modules /opt
