@@ -1,9 +1,9 @@
-name: build jdgenie
+name: build asw-admin
 on:
   push:
     branches:
     - main
-    - jdgenie
+    - asw-admin
   workflow_dispatch:
     inputs: {}
 env:
@@ -35,14 +35,14 @@ jobs:
       id: changes
       with:
         filters: |
-          jdgenie:
-          - jdgenie/**
-    - name: Build jdgenie
-      if: steps.changes.outputs.jdgenie == 'true' || github.event.name == 'workflow_dispatch'
+          asw-admin:
+          - asw-admin/**
+    - name: Build asw-admin
+      if: steps.changes.outputs.asw-admin == 'true' || github.event.name == 'workflow_dispatch'
       uses: docker/build-push-action@v4
       with:
-        context: jdgenie
-        file: jdgenie/Dockerfile
+        context: asw-admin
+        file: asw-admin/Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:jdgenie
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:asw-admin
         labels: ${{ steps.meta.outputs.labels }}
