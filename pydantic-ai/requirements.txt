@@ -19,3 +19,5 @@ pyarrow
 aiokafka
 simplejson
 shortuuid
+pytz
+truststore

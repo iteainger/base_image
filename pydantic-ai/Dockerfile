@@ -9,3 +9,4 @@ RUN set -eux \
   ;
 
 CMD ["fastapi","run","main.py"]
+
