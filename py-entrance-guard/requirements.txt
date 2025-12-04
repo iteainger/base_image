@@ -13,3 +13,4 @@ PyPDF2
 reportlab
 pypdfium2==4.18.0
 python-multipart
+dashscope
