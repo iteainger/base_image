@@ -1,7 +1,8 @@
 export def gen [] {
     const wd = path self .
+    const cfg = path self ,.yaml
     cd $wd
-    let g = $env.generate
+    let g = (open $cfg).generate
     let paths = ls
     | where type == dir
     | get name
