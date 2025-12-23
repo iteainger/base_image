@@ -1,9 +1,9 @@
-name: build netcore2.2
+name: build netcore
 on:
   push:
     branches:
     - main
-    - netcore2.2
+    - netcore
   workflow_dispatch:
     inputs: {}
 env:
@@ -35,14 +35,14 @@ jobs:
       id: changes
       with:
         filters: |
-          netcore2.2:
-          - netcore2.2/**
-    - name: Build netcore2.2
-      if: steps.changes.outputs.netcore2.2 == 'true' || github.event.name == 'workflow_dispatch'
+          netcore:
+          - netcore/**
+    - name: Build netcore
+      if: steps.changes.outputs.netcore == 'true' || github.event.name == 'workflow_dispatch'
       uses: docker/build-push-action@v4
       with:
-        context: netcore2.2
-        file: netcore2.2/Dockerfile
+        context: netcore
+        file: netcore/Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:netcore2.2
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:netcore
         labels: ${{ steps.meta.outputs.labels }}
