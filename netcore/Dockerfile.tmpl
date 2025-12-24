@@ -16,7 +16,7 @@ RUN set -eux \
   ; dotnet build ${PROJ_NAME}.csproj -c Release -o /app/build \
   ; dotnet publish ${PROJ_NAME}.csproj -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-slim
 ARG PROJ_NAME
 ENV PROJ_NAME=${PROJ_NAME}
 WORKDIR /app/publish

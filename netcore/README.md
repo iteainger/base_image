@@ -1,0 +1,5 @@
+- 复制 netcore 目录
+- 运行 `, gen` 生成 github actions
+  - 镜像 tag 为 :<目录名>-<Dockerfile名(如果有)>
+- 复制 csproj 文件到新目录
+- 修改 builder-2.2.Dockerfile 中 CSPROJ
