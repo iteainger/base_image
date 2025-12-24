@@ -47,5 +47,5 @@ jobs:
         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pg_duckdb
         labels: ${{ steps.meta.outputs.labels }}
         build-args: |-
-          REGISTRY: ${{ REGISTRY }}
-          IMAGE_NAME: ${{ IMAGE_NAME }}
+          REGISTRY: ${{ env.REGISTRY }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}

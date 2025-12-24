@@ -33,8 +33,8 @@ export def generate [
               tags: $"${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:($tag)"
               labels: "${{ steps.meta.outputs.labels }}"
               build-args: ([
-                "REGISTRY: ${{ REGISTRY }}"
-                "IMAGE_NAME: ${{ IMAGE_NAME }}"
+                "REGISTRY: ${{ env.REGISTRY }}"
+                "IMAGE_NAME: ${{ env.IMAGE_NAME }}"
               ] | str join "\n")
             }
             | merge deep ($ctx.repo | get -o $x | get -o $i | default {})

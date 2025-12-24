@@ -47,5 +47,5 @@ jobs:
         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:check-image-compliance
         labels: ${{ steps.meta.outputs.labels }}
         build-args: |-
-          REGISTRY: ${{ REGISTRY }}
-          IMAGE_NAME: ${{ IMAGE_NAME }}
+          REGISTRY: ${{ env.REGISTRY }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
