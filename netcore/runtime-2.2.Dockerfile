@@ -1,5 +1,5 @@
 FROM ghcr.io/fj0r/io:__dropbear__ AS dropbear
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-slim
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
 COPY --from=dropbear / /
 WORKDIR /app
 EXPOSE 80

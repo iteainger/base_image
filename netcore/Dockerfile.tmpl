@@ -1,7 +1,8 @@
-ARG REGISTRY
-ARG IMAGE_NAME
 ARG PROJ_NAME=FMS_API_Core.Web
 ARG PROJ_DIR=FMS_API_Core.Web
+
+ARG REGISTRY
+ARG IMAGE_NAME
 ARG BUILDER=${REGISTRY}/${IMAGE_NAME}:netcore-builder-2.2
 ARG RUNTIME=${REGISTRY}/${IMAGE_NAME}:netcore-runtime-2.2
 FROM ${BUILDER} AS build
@@ -16,7 +17,7 @@ RUN set -eux \
   ; dotnet build ${PROJ_NAME}.csproj -c Release -o /app/build \
   ; dotnet publish ${PROJ_NAME}.csproj -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-slim
+FROM ${RUNTIME}
 ARG PROJ_NAME
 ENV PROJ_NAME=${PROJ_NAME}
 WORKDIR /app/publish

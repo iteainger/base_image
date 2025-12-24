@@ -1,4 +1,6 @@
 - 复制 netcore 目录
+  - runtime.Dockerfile 每版本一个即可，无需重复构建
+  - Dockerfile.tmpl 为项目中使用的构建模板
 - 运行 `, gen` 生成 github actions
   - 镜像 tag 为 :<目录名>-<Dockerfile名(如果有)>
 - 复制 csproj 文件到新目录
