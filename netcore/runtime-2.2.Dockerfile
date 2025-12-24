@@ -1,12 +1,12 @@
-FROM ghcr.io/fj0r/0x:dropbear as dropbear
+FROM ghcr.io/fj0r/io:__dropbear__ AS dropbear
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim
 COPY --from=dropbear / /
 WORKDIR /app
 EXPOSE 80
 ENV TIMEZONE=Asia/Shanghai
 RUN set -eux \
-  ; cp /etc/apt/sources.list /etc/apt/sources.list.origin \
-  ; sed -i 's/\(.*\)\(security\|deb\).debian.org\(.*\)main/\1mirrors.ustc.edu.cn\3main contrib non-free/g' /etc/apt/sources.list \
+  # ; cp /etc/apt/sources.list /etc/apt/sources.list.origin \
+  # ; sed -i 's/\(.*\)\(security\|deb\).debian.org\(.*\)main/\1mirrors.ustc.edu.cn\3main contrib non-free/g' /etc/apt/sources.list \
   ; apt-get update \
   ; apt-get upgrade -y \
   ; DEBIAN_FRONTEND=noninteractive \
