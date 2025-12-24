@@ -1,71 +1,93 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-    <PropertyGroup>
-        <Version>1.0.0.0</Version>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
-        <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
-        <PreserveCompilationContext>true</PreserveCompilationContext>
-        <OutputType>Exe</OutputType>
-        <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0">
-        </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9">
-        </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1">
-        </PackageReference>
-        <PackageReference Include="System.Net.Primitives" Version="4.3.1">
-        </PackageReference>
-        <PackageReference Include="System.Net.NameResolution" Version="4.3.0">
-        </PackageReference>
-        <PackageReference Include="Castle.LoggingFacility.MsLogging" Version="3.1.0">
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0">
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="2.2.1">
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0">
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.2.1">
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0">
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0">
-        </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4">
-        </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6">
-        </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0">
-        </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0">
-        </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3">
-        </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Castle.Core" Version="4.4.0">
-        </PackageReference>
-        <PackageReference Include="Abp.AspNetCore" Version="4.8.1">
-        </PackageReference>
-        <PackageReference Include="Abp.Castle.Log4Net" Version="4.8.1">
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.WebSockets" Version="2.2.1">
-        </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.1.0">
-        </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0">
-        </PackageReference>
-        <PackageReference Include="Abp.Quartz" Version="4.8.1">
-        </PackageReference>
-    </ItemGroup>
-    <ItemGroup>
-        <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0">
-        </DotNetCliToolReference>
-    </ItemGroup>
+	<PropertyGroup>
+		<Version>1.0.0.0</Version>
+		<TargetFramework>netcoreapp2.2</TargetFramework>
+		<AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+		<PreserveCompilationContext>true</PreserveCompilationContext>
+		<AssemblyName>FMS_API_Core.Web</AssemblyName>
+		<OutputType>Exe</OutputType>
+		<PackageId>FMS_API_Core.Web</PackageId>
+		<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+		<GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+		<UserSecretsId>332332e6-11de-4927-9005-5eae60cccb89</UserSecretsId>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Startup\AppConfigurtaionServices.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Remove="wwwroot\XXX-客户收款汇总表-20190918-154845.xlsx" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="app.config" />
+		<None Update="log4net.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</None>
+		<None Update="wwwroot\**\*;Views\**\*">
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\FMS_API_Core.Application\FMS_API_Core.Application.csproj" />
+		<ProjectReference Include="..\FMS_API_Core.EntityFrameworkCore\FMS_API_Core.EntityFrameworkCore.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+		<PackageReference Include="System.Net.Primitives" Version="4.3.1" />
+		<PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
+		<PackageReference Include="Castle.LoggingFacility.MsLogging" Version="3.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="2.2.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.2.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Castle.Core" Version="4.4.0" />
+		<PackageReference Include="Abp.AspNetCore" Version="4.8.1" />
+		<PackageReference Include="Abp.Castle.Log4Net" Version="4.8.1" />
+		<PackageReference Include="Abp.EntityFrameworkCore" Version="4.8.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+		<PackageReference Include="MySql.Data" Version="8.0.17" />
+		<PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.17" />
+		<PackageReference Include="MySql.Data.EntityFrameworkCore.Design" Version="8.0.17" />
+		<PackageReference Include="NPOI" Version="2.4.1" />
+		<PackageReference Include="SharpZipLib" Version="1.2.0" />
+		<PackageReference Include="System.Data.Common" Version="4.3.0" />
+		<PackageReference Include="Abp" Version="4.8.1" />
+		<PackageReference Include="Abp.AutoMapper" Version="4.8.1" />
+		<PackageReference Include="Abp.Web.Common" Version="4.8.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+		<PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
+		<PackageReference Include="EPPlus.Core" Version="1.5.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+		<PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="F\**" />
+		<Content Remove="F\**" />
+		<EmbeddedResource Remove="F\**" />
+		<None Remove="F\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\file\bill\" />
+		<Folder Include="wwwroot\file\express\" />
+		<Folder Include="wwwroot\file\account\" />
+		<Folder Include="wwwroot\file\logistics\" />
+		<Folder Include="wwwroot\file\kuan\" />
+		<Folder Include="wwwroot\file\bill_pdf\" />
+	</ItemGroup>
 </Project>
