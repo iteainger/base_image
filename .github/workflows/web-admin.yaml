@@ -46,3 +46,6 @@ jobs:
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:web-admin
         labels: ${{ steps.meta.outputs.labels }}
+        build-args: |-
+          REGISTRY: ${{ REGISTRY }}
+          IMAGE_NAME: ${{ IMAGE_NAME }}

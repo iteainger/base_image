@@ -32,6 +32,10 @@ export def generate [
               push: "${{ github.event_name != 'pull_request' }}"
               tags: $"${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:($tag)"
               labels: "${{ steps.meta.outputs.labels }}"
+              build-args: ([
+                "REGISTRY: ${{ REGISTRY }}"
+                "IMAGE_NAME: ${{ IMAGE_NAME }}"
+              ] | str join "\n")
             }
             | merge deep ($ctx.repo | get -o $x | get -o $i | default {})
             {

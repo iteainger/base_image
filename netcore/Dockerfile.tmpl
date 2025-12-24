@@ -1,0 +1,36 @@
+ARG REGISTRY
+ARG IMAGE_NAME
+ARG PROJ_NAME=FMS_API_Core.Web
+ARG PROJ_DIR=FMS_API_Core.Web
+ARG BUILDER=${REGISTRY}/${IMAGE_NAME}:netcore-builder-2.2
+ARG RUNTIME=${REGISTRY}/${IMAGE_NAME}:netcore-runtime-2.2
+FROM ${BUILDER} AS build
+ARG PROJ_NAME
+ARG PROJ_DIR
+
+WORKDIR /src
+COPY src .
+WORKDIR /src/${PROJ_DIR}
+RUN set -eux \
+  ; ln -sf ../obj . \
+  ; dotnet build ${PROJ_NAME}.csproj -c Release -o /app/build \
+  ; dotnet publish ${PROJ_NAME}.csproj -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim
+ARG PROJ_NAME
+ENV PROJ_NAME=${PROJ_NAME}
+WORKDIR /app/publish
+ENV TIMEZONE=Asia/Shanghai
+RUN ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime && echo "$TIMEZONE" > /etc/timezone
+COPY --from=build /app/publish .
+
+ARG CI_COMMIT_TITLE
+ARG CI_COMMIT_SHA
+ARG CI_PIPELINE_BEGIN
+ARG CI_PIPELINE_ID
+ENV CI_COMMIT_TITLE=${CI_COMMIT_TITLE} \
+    CI_COMMIT_SHA=${CI_COMMIT_SHA} \
+    CI_PIPELINE_BEGIN=${CI_PIPELINE_BEGIN} \
+    CI_PIPELINE_ID=${CI_PIPELINE_ID}
+
+ENTRYPOINT dotnet ${PROJ_NAME}.dll
