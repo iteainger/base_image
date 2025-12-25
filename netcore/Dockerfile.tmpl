@@ -13,7 +13,7 @@ WORKDIR /build
 COPY src .
 WORKDIR /build/${PROJ_DIR}
 RUN set -eux \
-  ; tar -C ../src -cf - . | tar -xf - \
+  # ; tar -C ../src -cf - . | tar -xf - \
   ; dotnet build ${PROJ_NAME}.csproj -c Release -o /app/build \
   ; dotnet publish ${PROJ_NAME}.csproj -c Release -o /app/publish
 
