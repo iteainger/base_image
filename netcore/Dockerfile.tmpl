@@ -1,19 +1,19 @@
 ARG PROJ_NAME=FMS_API_Core.Web
 ARG PROJ_DIR=FMS_API_Core.Web
 
-ARG REGISTRY
-ARG IMAGE_NAME
+ARG REGISTRY=ghcr.io/iteainger
+ARG IMAGE_NAME=base_image
 ARG BUILDER=${REGISTRY}/${IMAGE_NAME}:netcore-builder-2.2
 ARG RUNTIME=${REGISTRY}/${IMAGE_NAME}:netcore-runtime-2.2
 FROM ${BUILDER} AS build
 ARG PROJ_NAME
 ARG PROJ_DIR
 
-WORKDIR /src
+WORKDIR /build
 COPY src .
-WORKDIR /src/${PROJ_DIR}
+WORKDIR /build/${PROJ_DIR}
 RUN set -eux \
-  ; ln -sf ../obj . \
+  ; tar -C ../src -cf - . | tar -xf - \
   ; dotnet build ${PROJ_NAME}.csproj -c Release -o /app/build \
   ; dotnet publish ${PROJ_NAME}.csproj -c Release -o /app/publish
 
