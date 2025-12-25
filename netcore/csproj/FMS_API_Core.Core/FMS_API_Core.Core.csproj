@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Version>1.0.0.0</Version>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AssemblyName>FMS_API_Core.Core</AssemblyName>
+    <PackageId>FMS_API_Core.Core</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RootNamespace>FMS_API_Core</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\SourceFiles\*.json" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Common\AppConfigurtaionServices.cs" />
+    <Compile Remove="Repositories\BillSN\IBillSNRepository.cs" />
+    <Compile Remove="Repositories\Dkmassage\BankExcel.cs" />
+    <Compile Remove="Repositories\Dkmassage\DKmassageRepository.cs" />
+    <Compile Remove="Repositories\Dkmassage\IDKmassageRepository.cs" />
+    <Compile Remove="Repositories\Dkmassage\UploadReturnInfo.cs" />
+    <Compile Remove="Repositories\Receivable\CustomerDetail.cs" />
+    <Compile Remove="Repositories\Receivable\CustomerInfo.cs" />
+    <Compile Remove="Repositories\Receivable\IReceivableRepository.cs" />
+    <Compile Remove="Repositories\Receivable\ProgressDetail.cs" />
+    <Compile Remove="Repositories\Receivable\ProgressPayments.cs" />
+    <Compile Remove="Repositories\Receivable\Receivable.cs" />
+    <Compile Remove="Repositories\Receivable\ReceivableRepository.cs" />
+    <Compile Remove="Utility\ISqlExecuter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp" Version="4.8.1" />
+    <PackageReference Include="Abp.AutoMapper" Version="4.8.1" />
+    <PackageReference Include="Abp.Web.Common" Version="4.8.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+  </ItemGroup>
+</Project>

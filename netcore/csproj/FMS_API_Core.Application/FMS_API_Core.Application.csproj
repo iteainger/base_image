@@ -1,0 +1,87 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Version>1.0.0.0</Version>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AssemblyName>FMS_API_Core.Application</AssemblyName>
+    <PackageId>FMS_API_Core.Application</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RootNamespace>FMS_API_Core</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>FMS_API_Core.Application.xml</DocumentationFile>
+    <OutputPath>bin\Debug\netcoreapp2.1\</OutputPath>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <NoWarn />
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="FMS\BillSn\**" />
+    <EmbeddedResource Remove="FMS\BillSn\**" />
+    <None Remove="FMS\BillSn\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="FMS\AccountSubject\IAccountSubjectAppService.cs" />
+    <Compile Remove="FMS\AcPeriod\IAcPeriodAppService.cs" />
+    <Compile Remove="FMS\BankExcel\IBankExcelAppService.cs" />
+    <Compile Remove="FMS\BankTransfer\IBankTransferAppService.cs" />
+    <Compile Remove="FMS\ContrastCus\Dto\UploadAccountOutput.cs" />
+    <Compile Remove="FMS\ContrastCus\Dto\UploadReturnAccountDto.cs" />
+    <Compile Remove="FMS\ContrastCus\IContrastCusAppService.cs" />
+    <Compile Remove="FMS\ContrastStock\IContrastStockAppService.cs" />
+    <Compile Remove="FMS\ContrastSupply\IContrastSupplyAppService.cs" />
+    <Compile Remove="FMS\CostCollect\Dto\UploadExpressOutput.cs" />
+    <Compile Remove="FMS\CostCollect\Dto\UploadReturnFeeDto.cs" />
+    <Compile Remove="FMS\CostCollect\ICostCollectAppService.cs" />
+    <Compile Remove="FMS\CostItem\ICostItemAppService.cs" />
+    <Compile Remove="FMS\CusAdjust\ICusAdjustAppService.cs" />
+    <Compile Remove="FMS\CusBillConfirm\ICusBillConfirmAppService.cs" />
+    <Compile Remove="FMS\CusBillUn\ICusBillUnAppService.cs" />
+    <Compile Remove="FMS\CusBill\ICusBillAppService.cs" />
+    <Compile Remove="FMS\CusKuan\Dto\UploadKuanOutput.cs" />
+    <Compile Remove="FMS\CusKuan\Dto\UploadReturnInfoDto.cs" />
+    <Compile Remove="FMS\CusKuan\ICusKuanAppService.cs" />
+    <Compile Remove="FMS\CusReceivableKuan\ICusReceivableKuanAppService.cs" />
+    <Compile Remove="FMS\CusReceivable\ICusReceivableAppService.cs" />
+    <Compile Remove="FMS\CusRefund\ICusRefundAppService.cs" />
+    <Compile Remove="FMS\Customer\ICustomerAppService.cs" />
+    <Compile Remove="FMS\ExpressExcel\IExpressExcelAppService.cs" />
+    <Compile Remove="FMS\PrintExpress\IPrintExpressAppService.cs" />
+    <Compile Remove="FMS\SupplyAdjust\ISupplyAdjustAppService.cs" />
+    <Compile Remove="FMS\SupplyPayable\ISupplyPayableAppService.cs" />
+    <Compile Remove="FMS\SupplyPayment\ISupplyPaymentAppService.cs" />
+    <Compile Remove="FMS\SupplyPurchase\ISupplyPurchaseAppService.cs" />
+    <Compile Remove="FMS\Supply\ISupplyAppService.cs" />
+    <Compile Remove="FMS\SysBillInfo\ISysBillInfoAppService.cs" />
+    <Compile Remove="FMS\SysInfo\ISysInfoAppService.cs" />
+    <Compile Remove="FMS\SysLog\ISysLogAppService.cs" />
+    <Compile Remove="Shop\CustomBill\ICustomBillAppService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FMS_API_Core.Core\FMS_API_Core.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Abp" Version="4.8.1" />
+    <PackageReference Include="Abp.EntityFrameworkCore" Version="4.8.1" />
+    <PackageReference Include="Abp.AutoMapper" Version="4.8.1" />
+    <PackageReference Include="Abp.Web.Common" Version="4.8.1" />
+    <PackageReference Include="Castle.Core" Version="4.4.0" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="NPOI" Version="2.4.1" />
+    <PackageReference Include="SharpZipLib" Version="1.2.0" />
+    <PackageReference Include="System.Data.Common" Version="4.3.0" />
+    <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="FMS\Common\Dto\" />
+    <Folder Include="FMS\ContrastStock\Dto\" />
+  </ItemGroup>
+</Project>
