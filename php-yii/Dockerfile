@@ -4,5 +4,5 @@ WORKDIR /srv
 
 COPY composer.json .
 
-RUN composer install --no-dev --no-cache --optimize-autoloader \
+RUN composer install  --no-cache --optimize-autoloader \
     && mv vendor /opt
