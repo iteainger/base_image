@@ -17,6 +17,7 @@ RUN set -eux \
   ; rm -f ferron.zip
 
 ARG PHP_VERSION
+ARG DEBIAN_SOURCE=trixie
 ENV PHP_VERSION=${PHP_VERSION}
 ENV PHP_PKGS \
         php${PHP_VERSION} \
@@ -42,8 +43,9 @@ ENV PHP_PKGS \
 RUN set -eux \
   ; apt-get update \
   ; apt-get install -y --no-install-recommends gnupg software-properties-common \
-  ; echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list \
-  ; curl --retry 3 https://packages.sury.org/php/apt.gpg | sudo apt-key add - \
+  ; curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg \
+  ; echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ ${DEBIAN_SOURCE} main" \
+    | tee /etc/apt/sources.list.d/php.list \
   ; apt-get update \
   ; apt-get install -y --no-install-recommends $PHP_PKGS \
   ; apt-get remove -y gnupg software-properties-common \
