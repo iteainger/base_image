@@ -1,8 +1,7 @@
 ARG BASEIMAGE=ghcr.io/fj0r/0x:ferron
 FROM ${BASEIMAGE}
 
-ARG PHP_VERSION=7.4
-ENV PHP_VERSION=${PHP_VERSION}
+ARG PHP_VERSION=8.2
 ENV PHP_PKGS \
         php${PHP_VERSION} \
         php${PHP_VERSION}-opcache \
@@ -11,9 +10,7 @@ ENV PHP_PKGS \
         php${PHP_VERSION}-common \
         php${PHP_VERSION}-curl \
         php${PHP_VERSION}-gd \
-        php${PHP_VERSION}-json \
         php${PHP_VERSION}-mbstring \
-        php${PHP_VERSION}-mcrypt \
         php${PHP_VERSION}-pgsql \
         php${PHP_VERSION}-mysql \
         php${PHP_VERSION}-xml \
@@ -26,12 +23,7 @@ ENV PHP_PKGS \
 
 RUN set -eux \
   ; apt-get update \
-  ; apt-get install -y --no-install-recommends gnupg software-properties-common \
-  ; echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list \
-  ; curl --retry 3 https://packages.sury.org/php/apt.gpg | sudo apt-key add - \
-  ; apt-get update \
   ; apt-get install -y --no-install-recommends $PHP_PKGS \
-  ; apt-get remove -y gnupg software-properties-common \
   ; apt-get autoremove -y \
   ; apt-get clean -y \
   ; rm -rf /var/lib/apt/lists/* \
@@ -41,7 +33,7 @@ RUN set -eux \
   ; ln -sf /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm \
   ; sed -e 's!^.*\(date.timezone =\).*$!\1 Asia/Shanghai!' \
         -e 's!^.*\(track_errors =\).*$!\1 Off!' \
-        -e 's!^\(error_reporting =.*\)$!\1 \& ~E_NOTICE \& ~E_WARNING!' \
+        #-e 's!^\(error_reporting =.*\)$!\1 \& ~E_WARNING!' \
         -i /etc/php/${PHP_VERSION}/fpm/php.ini \
   ; sed -e 's!.*\(daemonize =\).*!\1 no!' \
         -e 's!.*\(error_log =\).*!\1 /var/log/php-fpm/fpm.log!' \
@@ -65,9 +57,10 @@ RUN set -eux \
   ;
 
 COPY setup-php /setup-php
-COPY entrypoint/php.sh /entrypoint/
+COPY entrypoint /entrypoint/
 COPY ferron.kdl /opt/ferron/ferron.kdl
 CMD ["srv"]
+WORKDIR /srv
 
 RUN set -ex \
   ; curl --retry 3 -fsSL https://getcomposer.org/installer \

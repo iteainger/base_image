@@ -37,3 +37,15 @@ jobs:
         filters: |
           php:
           - php/**
+    - name: Build php
+      if: steps.changes.outputs.php == 'true' || github.event.name == 'workflow_dispatch'
+      uses: docker/build-push-action@v4
+      with:
+        context: php
+        file: php/v8.Dockerfile
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:php-v8
+        labels: ${{ steps.meta.outputs.labels }}
+        build-args: |-
+          REGISTRY: ${{ env.REGISTRY }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
