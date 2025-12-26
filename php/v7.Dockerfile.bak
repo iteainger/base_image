@@ -82,6 +82,7 @@ RUN set -eux \
 COPY setup-php /setup-php
 COPY entrypoint /entrypoint/
 COPY ferron.kdl /opt/ferron/ferron.kdl
+COPY index.php /srv/
 CMD ["srv"]
 WORKDIR /srv
 

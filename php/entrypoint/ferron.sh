@@ -1,7 +1,4 @@
-config=""
-if [ -n "$CONFIGFILE" ]; then
-    config="--config ${CONFIGFILE}"
-fi
+config="--config ${CONFIGFILE:-/opt/ferron/ferron.kdl}"
 
 cmd="/opt/ferron/ferron ${config}"
 
