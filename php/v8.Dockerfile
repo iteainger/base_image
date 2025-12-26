@@ -1,7 +1,7 @@
 ARG BASEIMAGE=ghcr.io/fj0r/0x:ferron
 FROM ${BASEIMAGE}
 
-ARG PHP_VERSION=8.2
+ARG PHP_VERSION=8.4
 ENV PHP_PKGS \
         php${PHP_VERSION} \
         php${PHP_VERSION}-opcache \
@@ -66,8 +66,6 @@ RUN set -ex \
   ; curl --retry 3 -fsSL https://getcomposer.org/installer \
     | php -- --install-dir=/usr/local/bin --filename=composer
 
-ENV FASTCGI=php
-ENV FASTCGI_PASS=unix:/var/run/php/php-fpm.sock
 ENV PHP_DEBUG=
 ENV PHP_PROFILE=
 ENV PHP_FPM_SERVERS=
