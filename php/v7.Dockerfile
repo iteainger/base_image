@@ -27,6 +27,7 @@ ENV PHP_PKGS \
         php${PHP_VERSION}-common \
         php${PHP_VERSION}-curl \
         php${PHP_VERSION}-gd \
+        php${PHP_VERSION}-imagick \
         php${PHP_VERSION}-json \
         php${PHP_VERSION}-mbstring \
         php${PHP_VERSION}-mcrypt \
