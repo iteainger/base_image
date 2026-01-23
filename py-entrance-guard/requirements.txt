@@ -1,6 +1,6 @@
 fastapi
 requests
-uvicorn
+uvicorn[standard]
 pypika
 pydantic
 pydantic-settings
