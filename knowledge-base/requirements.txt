@@ -1,0 +1,14 @@
+surrealdb
+python-dotenv
+
+markitdown
+python-docx
+openpyxl
+python-pptx
+PyMuPDF
+pillow
+
+boto3
+
+fastapi[standard]
+uvicorn
