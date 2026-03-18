@@ -10,5 +10,11 @@ pillow
 
 boto3
 
+pydantic-settings
+PyYAML
 fastapi[standard]
 uvicorn
+
+streamlit
+
+structlog
