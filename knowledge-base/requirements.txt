@@ -1,5 +1,6 @@
 surrealdb
 python-dotenv
+openai
 
 markitdown
 python-docx
