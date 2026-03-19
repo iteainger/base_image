@@ -1,6 +1,7 @@
 surrealdb
 python-dotenv
 openai
+jinja2
 
 markitdown
 python-docx
