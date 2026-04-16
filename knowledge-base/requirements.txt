@@ -1,7 +1,6 @@
 surrealdb
 python-dotenv
 openai
-jinja2
 
 markitdown
 python-docx
@@ -16,7 +15,13 @@ pydantic-settings
 PyYAML
 fastapi[standard]
 uvicorn
-
-streamlit
+jinja2
 
 structlog
+pytest
+pytest-asyncio
+httpx
+
+Kreuzeberg
+
+huey>=2.4.0
