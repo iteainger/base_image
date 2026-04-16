@@ -22,6 +22,6 @@ pytest
 pytest-asyncio
 httpx
 
-Kreuzeberg
+kreuzeberg
 
 huey>=2.4.0
