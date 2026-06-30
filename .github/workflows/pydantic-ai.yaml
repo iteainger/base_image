@@ -1,9 +1,9 @@
 name: build pydantic-ai
-on:
+'on':
   push:
     branches:
-    - main
-    - pydantic-ai
+      - main
+      - pydantic-ai
   workflow_dispatch:
     inputs: {}
 env:
@@ -17,35 +17,35 @@ jobs:
       contents: read
       packages: write
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-    - name: Log into registry ${{ env.REGISTRY }}
-      if: github.event_name != 'pull_request'
-      uses: docker/login-action@v2
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: iteainger
-        password: ${{ secrets.GHCR_TOKEN }}
-    - name: Extract Docker metadata
-      id: meta
-      uses: docker/metadata-action@v4
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-    - uses: dorny/paths-filter@v3
-      id: changes
-      with:
-        filters: |
-          pydantic-ai:
-          - pydantic-ai/**
-    - name: Build pydantic-ai
-      if: steps.changes.outputs.pydantic-ai == 'true' || github.event.name == 'workflow_dispatch'
-      uses: docker/build-push-action@v4
-      with:
-        context: pydantic-ai
-        file: pydantic-ai/Dockerfile
-        push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pydantic-ai
-        labels: ${{ steps.meta.outputs.labels }}
-        build-args: |-
-          REGISTRY: ${{ env.REGISTRY }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: iteainger
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            pydantic-ai:
+              - pydantic-ai/**
+      - name: Build pydantic-ai
+        if: steps.changes.outputs.pydantic-ai == 'true' || github.event.name == 'workflow_dispatch'
+        uses: docker/build-push-action@v4
+        with:
+          context: pydantic-ai
+          file: pydantic-ai/Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pydantic-ai
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |-
+            REGISTRY: ${{ env.REGISTRY }}
+            IMAGE_NAME: ${{ env.IMAGE_NAME }}

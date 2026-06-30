@@ -1,9 +1,9 @@
 name: build php
-on:
+'on':
   push:
     branches:
-    - main
-    - php
+      - main
+      - php
   workflow_dispatch:
     inputs: {}
 env:
@@ -17,47 +17,47 @@ jobs:
       contents: read
       packages: write
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-    - name: Log into registry ${{ env.REGISTRY }}
-      if: github.event_name != 'pull_request'
-      uses: docker/login-action@v2
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: iteainger
-        password: ${{ secrets.GHCR_TOKEN }}
-    - name: Extract Docker metadata
-      id: meta
-      uses: docker/metadata-action@v4
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-    - uses: dorny/paths-filter@v3
-      id: changes
-      with:
-        filters: |
-          php:
-          - php/**
-    - name: Build php
-      if: steps.changes.outputs.php == 'true' || github.event.name == 'workflow_dispatch'
-      uses: docker/build-push-action@v4
-      with:
-        context: php
-        file: php/v7.Dockerfile
-        push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:php-v7
-        labels: ${{ steps.meta.outputs.labels }}
-        build-args: |-
-          REGISTRY: ${{ env.REGISTRY }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-    - name: Build php
-      if: steps.changes.outputs.php == 'true' || github.event.name == 'workflow_dispatch'
-      uses: docker/build-push-action@v4
-      with:
-        context: php
-        file: php/v8.Dockerfile
-        push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:php-v8
-        labels: ${{ steps.meta.outputs.labels }}
-        build-args: |-
-          REGISTRY: ${{ env.REGISTRY }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: iteainger
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            php:
+              - php/**
+      - name: Build php
+        if: steps.changes.outputs.php == 'true' || github.event.name == 'workflow_dispatch'
+        uses: docker/build-push-action@v4
+        with:
+          context: php
+          file: php/v7.Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:php-v7
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |-
+            REGISTRY: ${{ env.REGISTRY }}
+            IMAGE_NAME: ${{ env.IMAGE_NAME }}
+      - name: Build php
+        if: steps.changes.outputs.php == 'true' || github.event.name == 'workflow_dispatch'
+        uses: docker/build-push-action@v4
+        with:
+          context: php
+          file: php/v8.Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:php-v8
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |-
+            REGISTRY: ${{ env.REGISTRY }}
+            IMAGE_NAME: ${{ env.IMAGE_NAME }}

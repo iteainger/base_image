@@ -1,9 +1,9 @@
 name: build llama_index
-on:
+'on':
   push:
     branches:
-    - main
-    - llama_index
+      - main
+      - llama_index
   workflow_dispatch:
     inputs: {}
 env:
@@ -17,35 +17,35 @@ jobs:
       contents: read
       packages: write
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-    - name: Log into registry ${{ env.REGISTRY }}
-      if: github.event_name != 'pull_request'
-      uses: docker/login-action@v2
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: iteainger
-        password: ${{ secrets.GHCR_TOKEN }}
-    - name: Extract Docker metadata
-      id: meta
-      uses: docker/metadata-action@v4
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-    - uses: dorny/paths-filter@v3
-      id: changes
-      with:
-        filters: |
-          llama_index:
-          - llama_index/**
-    - name: Build llama_index
-      if: steps.changes.outputs.llama_index == 'true' || github.event.name == 'workflow_dispatch'
-      uses: docker/build-push-action@v4
-      with:
-        context: llama_index
-        file: llama_index/Dockerfile
-        push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:llama_index
-        labels: ${{ steps.meta.outputs.labels }}
-        build-args: |-
-          REGISTRY: ${{ env.REGISTRY }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: iteainger
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            llama_index:
+              - llama_index/**
+      - name: Build llama_index
+        if: steps.changes.outputs.llama_index == 'true' || github.event.name == 'workflow_dispatch'
+        uses: docker/build-push-action@v4
+        with:
+          context: llama_index
+          file: llama_index/Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:llama_index
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |-
+            REGISTRY: ${{ env.REGISTRY }}
+            IMAGE_NAME: ${{ env.IMAGE_NAME }}

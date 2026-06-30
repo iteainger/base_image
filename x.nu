@@ -1,6 +1,6 @@
 export def gen [] {
     const wd = path self .
-    const cfg = path self ,.yaml
+    const cfg = path self x.yaml
     cd $wd
     let g = (open $cfg).generate
     let paths = ls
