@@ -4,7 +4,7 @@
 # (stacks [base dev ssh net db s3 diag file archive network-tools] resolved
 # through hub.yaml "stacks.debian"), so this image can replace the xy:deb layer
 # while keeping the bash entrypoint instead of the nushell one.
-ARG BASEIMAGE=debian:sid-slim
+ARG BASEIMAGE=debian:stable-slim
 FROM ghcr.io/orbsh/assets:dropbear AS dropbear
 
 FROM ${BASEIMAGE}
