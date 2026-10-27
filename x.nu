@@ -16,7 +16,7 @@ export def generate [
     let oldpwd = $env.PWD
     for x in $paths {
         cd ([$oldpwd $x] | path join)
-        let bs = ls *Dockerfile | get name
+        let bs = ls *Dockerfile | get name | reverse
         | each {|i|
             let file = $"($x)/($i)"
             if $file in $ctx.exclude { return }
@@ -41,7 +41,7 @@ export def generate [
             {
                 name: $"Build ($x)"
                 if: $"steps.changes.outputs.($x) == 'true' || github.event.name == 'workflow_dispatch'"
-                uses: "docker/build-push-action@v4"
+                uses: "docker/build-push-action@v7"
                 with: $w
             }
         }
@@ -73,12 +73,12 @@ export def generate [
               steps: [
                 {
                   name: "Checkout repository",
-                  uses: "actions/checkout@v3"
+                  uses: "actions/checkout@v7"
                 }
                 {
                   name: "Log into registry ${{ env.REGISTRY }}"
                   if: "github.event_name != 'pull_request'"
-                  uses: "docker/login-action@v2",
+                  uses: "docker/login-action@v4",
                   with: {
                     registry: "${{ env.REGISTRY }}",
                     username: $ctx.user,
@@ -88,13 +88,13 @@ export def generate [
                 {
                   name: "Extract Docker metadata"
                   id: meta
-                  uses: "docker/metadata-action@v4"
+                  uses: "docker/metadata-action@v6"
                   with: {
                     images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
                   }
                 }
                 {
-                  uses: "dorny/paths-filter@v3"
+                  uses: "dorny/paths-filter@v4"
                   id: changes
                   with: {
                     filters: $pf
