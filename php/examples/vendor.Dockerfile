@@ -10,19 +10,20 @@
 ARG BASEIMAGE=iteainger/base_image:php
 FROM ${BASEIMAGE}
 
-ARG VENDOR_URL=http://file.s/vendor.tar
+ARG VENDOR_URL=http://file.s/vendor.tar.zst
 
 # vendor 解包在 /srv 之外：应用树仍是 COPY/挂载的对象，vendor 自己占一层可缓存。
 # 归档顶层就是 `vendor/`，所以 -C /opt 得到 /opt/vendor（若归档自带别的顶层前缀，
 # 这里要换成 --strip-components=1）。
 #
-# 不做重试：file.s 偶尔会掐断长传输，那就让构建直接失败（curl exit 18 /
-# tar "Unexpected EOF in archive"），不要拿重试掩盖上游问题。
+# 归档是 tar.zst，边下边解：不落临时文件，管道里一次过完。
+# 打包命令（在 vendor/ 的上一级执行）：
+#   tar -cf - --exclude '.DS_Store' vendor | zstd -T0 -19 -o vendor.tar.zst
+# .DS_Store 在打包侧排除；漏排了也不影响运行，镜像里不再处理。
+# 不做重试：file.s 偶尔会掐断长传输，那就让构建直接失败（解压侧报 unexpected EOF），
+# 不要拿重试掩盖上游问题。
 RUN set -eux \
-  ; curl -fsSL ${VENDOR_URL} -o /tmp/vendor.tar \
-  ; tar -xf /tmp/vendor.tar -C /opt \
-  ; rm -f /tmp/vendor.tar \
-  ; find /opt/vendor -name '.DS_Store' -delete \
+  ; curl -fsSL ${VENDOR_URL} | zstd -dc | tar -xf - -C /opt \
   ; test -d /opt/vendor \
   ;
 
