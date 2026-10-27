@@ -1,7 +1,0 @@
-[
-    {
-        "root": "/webgrind",
-        "port": 8090,
-        "fastcgi": "php"
-    }
-]

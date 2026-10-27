@@ -7,8 +7,6 @@ generate:
     - or/Dockerfile
     - or/full.Dockerfile
     - openresty/Dockerfile
-    - php/7.Dockerfile
-    - php/8.Dockerfile
     - postgres/Dockerfile
     - postgres/dev.Dockerfile
     - postgres/ext.Dockerfile
@@ -43,6 +41,12 @@ generate:
     - typst/fonts.Dockerfile
     - v2ray/Dockerfile
     repo:
+      php:
+        deb.Dockerfile:
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:deb
+        Dockerfile:
+          build-args: |-
+            BASEIMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:deb
       ci:
         Dockerfile:
           build-args: |

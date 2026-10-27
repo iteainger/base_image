@@ -42,9 +42,9 @@ jobs:
       uses: docker/build-push-action@v7
       with:
         context: php
-        file: php/v8.Dockerfile
+        file: php/deb.Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:php-v8
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:deb
         labels: ${{ steps.meta.outputs.labels }}
         build-args: |-
           REGISTRY: ${{ env.REGISTRY }}
@@ -54,10 +54,8 @@ jobs:
       uses: docker/build-push-action@v7
       with:
         context: php
-        file: php/v7.Dockerfile
+        file: php/Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:php-v7
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:php
         labels: ${{ steps.meta.outputs.labels }}
-        build-args: |-
-          REGISTRY: ${{ env.REGISTRY }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        build-args: BASEIMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:deb
