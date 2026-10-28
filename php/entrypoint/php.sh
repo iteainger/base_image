@@ -1,9 +1,3 @@
-# php stack: php-fpm master + ferron front.
-#
-# init.sh sources the scripts in name order and presets no order of its own, so
-# both daemons live in this one script: ferron proxies to the socket php-fpm
-# creates, and the wait below cannot stall any other script.
-
 # init.sh already runs as root; do not go through sudo, it resets the env
 # (UPLOAD_MAX_FILESIZE, PHP_FPM_SERVERS, PHP_DEBUG, ...) that setup-php reads.
 if [[ -f /setup-php ]]; then

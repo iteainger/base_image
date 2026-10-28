@@ -20,10 +20,11 @@ stop() {
     echo "Received SIGINT or SIGTERM. Shutting down"
     # Get PID
     pid=$(cat /var/run/services)
-    # Set TERM
-    kill -SIGTERM ${pid}
+    # Set TERM; a pid that already exited must not abort the handler below
+    # (`set -e` is active here), or the surviving daemons never get signalled.
+    kill -SIGTERM ${pid} 2> /dev/null || true
     # Wait for exit
-    wait ${pid}
+    wait ${pid} 2> /dev/null || true
     # All done.
     echo -n '' | sudo tee /var/run/services > /dev/null
     echo "Done."
@@ -60,5 +61,5 @@ elif [[ $1 == "srv" ]]; then
     wait -n $(cat /var/run/services) && exit $?
 else
     echo "[$(now)] enter batch mode"
-    exec $@
+    exec "$@"
 fi

@@ -7,62 +7,64 @@ else
     __shell=/bin/sh
 fi
 
+# $1 = name[:uid[:gid[:comment]]], $2 = the ed25519 public key
 set_user () {
     IFS=':' read -ra ARR <<< "$1"
-    _NAME=${ARR[0]}
+    local _NAME=${ARR[0]}
+    local _KEY=$2
+    local _UID _GID _COMMENT
     if [[ ${_NAME} == "root" ]]; then
         _UID=0
         _GID=0
     else
         _UID=${ARR[1]:-1000}
-        _GID=${ARR[2]:-1000}
+        _GID=${ARR[2]:-$_UID}
+        _COMMENT=${ARR[3]:-$_NAME}
 
         sudo getent group ${_NAME} >/dev/null 2>&1 || sudo groupadd -g ${_GID} ${_NAME}
-        sudo getent passwd ${_NAME} >/dev/null 2>&1 || sudo useradd -m -u ${_UID} -g ${_GID} -G sudo -s ${__shell} -c "$2" ${_NAME}
+        sudo getent passwd ${_NAME} >/dev/null 2>&1 || sudo useradd -m -u ${_UID} -g ${_GID} -G ${SSH_SUDO_GROUP:-sudo} -s ${__shell} -c "${_COMMENT}" ${_NAME}
     fi
 
-    _HOME_DIR=$(getent passwd $1 | cut -d: -f6)
+    local _HOME_DIR
+    _HOME_DIR=$(getent passwd ${_NAME} | cut -d: -f6)
 
-    _PROFILE="${_HOME_DIR}/.profile"
+    local _PROFILE="${_HOME_DIR}/.profile"
     { \
         echo "" ;\
-        echo "PATH=$PATH" ;\
+        echo "export PATH=$PATH" ;\
     } | sudo tee -a ${_PROFILE} > /dev/null
 
     sudo mkdir -p ${_HOME_DIR}/.ssh
-    echo "ssh-ed25519 $3" | sudo tee -a ${_HOME_DIR}/.ssh/authorized_keys > /dev/null
+    echo "ssh-ed25519 $_KEY" | sudo tee -a ${_HOME_DIR}/.ssh/authorized_keys > /dev/null
     sudo chown ${_NAME} -R ${_HOME_DIR}/.ssh
     sudo chmod go-rwx -R ${_HOME_DIR}/.ssh
 }
 
 init_ssh () {
     if [[ -n "$SSH_HOSTKEY_ED25519" ]]; then
+        # tee keeps umask's 644; a private host key must not be group/world
+        # readable, and dropbear does not tighten it for us.
         echo "$SSH_HOSTKEY_ED25519" | base64 -d \
-        | sudo tee /etc/dropbear/dropbear_ed25519_host_key
+        | sudo tee /etc/dropbear/dropbear_ed25519_host_key > /dev/null
+        sudo chmod 600 /etc/dropbear/dropbear_ed25519_host_key
     fi
 
     for i in "${!ed25519_@}"; do
         _USER=${i:8}
-        _KEY=$(eval "echo \$$i")
-        set_user ${_USER} 'SSH User' ${_KEY}
+        set_user "${_USER}" "${!i}"
     done
 }
 
+# dropbear writes to PID 1's stdout so its log lands in the container log.
 run_ssh () {
-    local logfile
-    if [[ -n "$stdlog" ]]; then
-        logfile=/dev/stdout
-    else
-        logfile=/var/log/sshd
-    fi
-
     if [[ -z "$SSH_TIMEOUT" ]]; then
         echo "starting dropbear"
-        sudo /usr/bin/dropbear -REFems -p 22 2>&1 | sudo tee -a $logfile > /dev/null &
+        sudo dropbear -REFems -p 22 >> /proc/1/fd/1 2>&1 &
     else
         echo "starting dropbear with a timeout of ${SSH_TIMEOUT} seconds"
-        sudo /usr/bin/dropbear -REFems -p 22 -K ${SSH_TIMEOUT} -I ${SSH_TIMEOUT} 2>&1 | sudo tee -a $logfile > /dev/null &
+        sudo dropbear -REFems -p 22 -K ${SSH_TIMEOUT} -I ${SSH_TIMEOUT} >> /proc/1/fd/1 2>&1 &
     fi
+    # Direct redirect, no pipe: $! must be the dropbear PID (see s3fs.sh).
     echo -n "$! " | sudo tee -a /var/run/services > /dev/null
 }
 

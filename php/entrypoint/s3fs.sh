@@ -3,22 +3,18 @@
 
 run_s3 () {
     IFS=',' read -ra ARR <<< "$2"
-    _mount=${ARR[0]}
-    _user=${ARR[1]}
-    _endpoint=${ARR[2]}
-    _region=${ARR[3]}
-    _bucket=${ARR[4]}
-    _accesskey=${ARR[5]}
-    _secretkey=${ARR[6]}
+    local _mount=${ARR[0]}
+    local _user=${ARR[1]:-root}
+    local _endpoint=${ARR[2]}
+    local _region=${ARR[3]}
+    local _bucket=${ARR[4]}
+    local _accesskey=${ARR[5]}
+    local _secretkey=${ARR[6]}
 
-    _opt=""
-    for i in ${ARR[@]:7}; do
-        IFS='=' read -ra KV <<< $i
-        if [[ -z "${KV[1]}" ]]; then
-            _opt+="-o ${KV[0]} "
-        else
-            _opt+="-o $i "
-        fi
+    local -a _opt=()
+    local i
+    for i in "${ARR[@]:7}"; do
+        _opt+=(-o "$i")
     done
 
     local name=${_mount////_}
@@ -27,7 +23,7 @@ run_s3 () {
     if [[ ! -d /.s3fs-passwd ]]; then
         sudo mkdir /.s3fs-passwd
     fi
-    _authfile=/.s3fs-passwd/$name
+    local _authfile=/.s3fs-passwd/$name
     echo authfile $_authfile
 
     echo "${_accesskey}:${_secretkey}" | sudo tee $_authfile > /dev/null
@@ -36,14 +32,20 @@ run_s3 () {
     sudo mkdir -p $_mount
     sudo chown $_user $_mount
 
+    local -a _region_opt=(-o use_path_request_style)
     if [[ -n "${_region}" ]]; then
-        _region="-o endpoint=$_region"
-    else
-        _region="-o use_path_request_style"
+        _region_opt=(-o "endpoint=${_region}")
     fi
-    cmd="sudo -u $_user s3fs -f $_opt -o bucket=$_bucket -o passwd_file=$_authfile -o url=$_endpoint $_region $_mount"
-    echo $cmd
-    eval $cmd 2>&1 | sudo tee -a $logfile &
+
+    # Built as an array, not a string: an option or secret carrying spaces,
+    # quotes or `$(...)` must reach s3fs literally, never through the shell.
+    local -a _cmd=(sudo -u "${_user}" s3fs -f "${_opt[@]}"
+        -o "bucket=$_bucket" -o "passwd_file=$_authfile" -o "url=$_endpoint"
+        "${_region_opt[@]}" "$_mount")
+    echo "${_cmd[*]}"
+    # Direct redirect, no pipe: $! must be the s3fs PID, otherwise the pid
+    # recorded below is the logger's and the mount's death goes unnoticed.
+    "${_cmd[@]}" >> $logfile 2>&1 &
     echo -n "$! " | sudo tee -a /var/run/services > /dev/null
 }
 
@@ -52,7 +54,6 @@ if [[ -n "$__s3" ]]; then
     for i in "${!s3_@}"; do
         _ID=${i:3}
         echo "starting s3fs $_ID"
-        _ARGS=$(eval "echo \$$i")
-        run_s3 ${_ID} ${_ARGS}
+        run_s3 "$_ID" "${!i}"
     done
 fi
