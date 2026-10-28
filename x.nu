@@ -144,3 +144,12 @@ export def csproj [src target --glob(-g): glob = **/*.csproj] {
       cp -r $x $d
   }
 }
+
+export def build-php-base-image [
+  tag: string
+  --docker-file: string = 'php/examples/vendor.Dockerfile'
+  --vendor-url: string = 'http://file.s/vendor-8.4.tar.zst' 
+] {
+  docker build . -t  $tag -f $docker_file --build-arg VENDOR_URL=($vendor_url)
+  docker push $tag
+}
