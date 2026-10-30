@@ -7,7 +7,7 @@
 #
 # 这类文件属于业务仓库，这里只作模板。放在 examples/ 下是有意的：x.nu gen 只
 # glob 镜像目录根部的 `*Dockerfile`，模板不能和 php/Dockerfile 并列。
-ARG BASEIMAGE=iteainger/base_image:php
+ARG BASEIMAGE=ghcr.io/iteainger/base_image:php
 FROM ${BASEIMAGE}
 
 ARG VENDOR_URL=http://file.s/vendor.tar.zst

@@ -149,7 +149,16 @@ export def build-php-base-image [
   tag: string = 'registry.s/base/php:8.4'
   --docker-file: string = 'php/examples/vendor.Dockerfile'
   --vendor-url: string = 'http://file.s/vendor-8.4.tar.zst' 
+  --base-image: string
 ] {
-  docker build . -t  $tag -f $docker_file --build-arg VENDOR_URL=($vendor_url)
+  mut args = [
+    -t  $tag
+    -f $docker_file
+    --build-arg VENDOR_URL=($vendor_url)
+  ]
+  if ($base_image | is-not-empty) {
+    $args ++= [--build-arg BASEIMAGE=($base_image)]
+  }
+  docker build . ...$args
   docker push $tag
 }
