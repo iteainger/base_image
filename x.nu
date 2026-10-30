@@ -146,7 +146,7 @@ export def csproj [src target --glob(-g): glob = **/*.csproj] {
 }
 
 export def build-php-base-image [
-  tag: string
+  tag: string = 'registry.s/base/php:8.4'
   --docker-file: string = 'php/examples/vendor.Dockerfile'
   --vendor-url: string = 'http://file.s/vendor-8.4.tar.zst' 
 ] {
