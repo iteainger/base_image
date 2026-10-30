@@ -149,7 +149,7 @@ export def build-php-base-image [
   tag: string = 'registry.s/base/php:8.4'
   --docker-file: string = 'php/examples/vendor.Dockerfile'
   --vendor-url: string = 'http://file.s/vendor-8.4.tar.zst' 
-  --base-image: string
+  --base-image: string = 'ghcr.io/iteainger/base_image:php'
 ] {
   mut args = [
     -t  $tag
@@ -159,6 +159,7 @@ export def build-php-base-image [
   if ($base_image | is-not-empty) {
     $args ++= [--build-arg BASEIMAGE=($base_image)]
   }
+  docker pull $base_image
   docker build . ...$args
   docker push $tag
 }
